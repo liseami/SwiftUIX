@@ -123,6 +123,10 @@ extension _TargetPlatformConditionalModifiable: View where Root: View {
     fileprivate init(@ViewBuilder root: () -> Root)  {
         self.init(root: root())
     }
+    
+    fileprivate init(@ViewBuilder viewBuilder: () -> Root)  {
+        self.init(root: viewBuilder())
+    }
 }
 
 @available(macOS 13.0, iOS 14.0, watchOS 8.0, tvOS 14.0, *)
@@ -222,7 +226,7 @@ extension _TargetPlatformConditionalModifiable where Root: Scene, Platform == _S
         _ mode: SpecificTypes.NavigationBarItemTitleDisplayMode
     ) -> _TargetPlatformConditionalModifiable<some View, Platform> {
 #if os(iOS)
-        _TargetPlatformConditionalModifiable<_, Platform> {
+        _TargetPlatformConditionalModifiable<_, Platform>(viewBuilder: {
             switch mode {
                 case .automatic:
                     root.navigationBarTitleDisplayMode(.automatic)
@@ -231,7 +235,7 @@ extension _TargetPlatformConditionalModifiable where Root: Scene, Platform == _S
                 case .large:
                     root.navigationBarTitleDisplayMode(.inline)
             }
-        }
+        })
 #else
         self
 #endif
@@ -259,13 +263,13 @@ extension _TargetPlatformConditionalModifiable where Root: View, Platform == _Sw
         _ state: _SwiftUI_TargetPlatform.macOS._ControlActiveState
     ) -> _TargetPlatformConditionalModifiable<some View, Platform> {
         #if os(macOS)
-        _TargetPlatformConditionalModifiable<_, Platform> {
+        _TargetPlatformConditionalModifiable<_, Platform>(viewBuilder: {
             self.environment(\.controlActiveState, .init(state))
-        }
+        })
         #else
-        _TargetPlatformConditionalModifiable<_, Platform> {
+        _TargetPlatformConditionalModifiable<_, Platform>(viewBuilder: {
             self
-        }
+        })
         #endif
     }
 }
