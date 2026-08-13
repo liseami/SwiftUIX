@@ -53,14 +53,12 @@ public struct PaginationView<Page: View>: View {
     @State public var _currentPageIndex = 0
     
     /// Never access this directly, it is marked public as a workaround to a compiler bug.
-    @inlinable
     @DelayedState public var _progressionController: ProgressionController?
     
     private var _scrollViewConfiguration: CocoaScrollViewConfiguration<AnyView> = nil
     
     var paginationState: Binding<PaginationState>?
     
-    @inlinable
     public init(
         content: AnyForEach<Page>,
         axis: Axis = .horizontal,
@@ -80,7 +78,6 @@ public struct PaginationView<Page: View>: View {
         }
     }
     
-    @inlinable
     public init<Data, ID>(
         content: ForEach<Data, ID, Page>,
         axis: Axis = .horizontal,
